@@ -58,19 +58,20 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     url = message.attachments[0].url
     filename = url.rsplit('/', 1)[-1]
     fileext = filename.rsplit('.', 1)[-1]
+    filepath = os.path.join(TERRARIA_FOLDER, filename)
 
     if not fileext in ['bak', 'bak2', 'wld']:
         return
 
     try:
-        f = open(path)
+        f = open(filepath)
     except IOError:
         if terraria_is_running():
             await discord_reaction_loading(message, False)
             await discord_reaction_fail(message)
             await channel.send("Terraria server is running and file has same name. Stop server before replacing the file" % filename)
             return
-    filepath = os.path.join(TERRARIA_FOLDER, filename)
+    
     await message.attachments[0].save(fp=filepath)
 
     await discord_reaction_loading(message, False)
@@ -126,15 +127,10 @@ async def bot_terraria_stop(ctx, restart=False):
     
     terraria_exit()
     await discord_reaction_loading(ctx.message, False)
-    if terraria_is_running():
-        await discord_reaction_fail(ctx.message)
-        await ctx.send(content="Failed to stop terraria server :scream: :pray:")
-        return False
-    else:
-        await discord_reaction_done(ctx.message)
-        if restart is False:
-            await ctx.send(content="Terraria server stopped :red_circle:") 
-        return True
+    await discord_reaction_done(ctx.message)
+    if restart is False:
+        await ctx.send(content="Terraria server stopped :red_circle:") 
+    return True
 
 async def bot_terraria_update(ctx, filename):
     await discord_reaction_loading(ctx.message)
