@@ -3,3 +3,5 @@
 *.bak2
 *.txt
 *.out
+**/__pycache__/
+*.pyc
