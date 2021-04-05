@@ -125,7 +125,7 @@ async def bot_terraria_stop(ctx, restart=False):
         await ctx.send(content="Terraria is not running :exclamation:")
         return False
     
-    terraria_exit()
+    await terraria_exit()
     await discord_reaction_loading(ctx.message, False)
     await discord_reaction_done(ctx.message)
     if restart is False:
@@ -135,7 +135,7 @@ async def bot_terraria_stop(ctx, restart=False):
 async def bot_terraria_update(ctx, filename):
     await discord_reaction_loading(ctx.message)
     if terraria_is_running():
-        terraria_exit()
+        await terraria_exit()
     terraria_update(filename)
     terraria_start(filename)
     await discord_reaction_loading(ctx.message, False)
@@ -159,8 +159,8 @@ async def discord_reaction(message, emoji, add=True):
     await message.add_reaction(emoji) if add else await message.remove_reaction(emoji, bot.user)
 
 # Terraria helpers
-def terraria_exit():
-    terraria_send_countdown
+async def terraria_exit():
+    await terraria_send_countdown
     os.system(TERRARIA_COMMAND_EXIT)
 
 def terraria_start(filename):
@@ -175,7 +175,7 @@ def terraria_is_running():
 def terraria_send_message(message):
     os.system(TERRARIA_COMMAND_MESSAGE % (message, CONTAINER_NAME))
 
-def terraria_send_countdown(seconds=5):
+async def terraria_send_countdown(seconds=5):
     terraria_send_message('Server will be shutdown in 5 seconds...')
     while(seconds):
         terraria_send_message('%s...' % seconds)
