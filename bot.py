@@ -176,14 +176,14 @@ def terraria_send_message(message):
     os.system(TERRARIA_COMMAND_MESSAGE % (message, CONTAINER_NAME))
 
 def terraria_wait_stopped():
-    timeout = time.time() + 20
+    timeout = time.time() + 30
     while True:
         if terraria_is_running():
             time.sleep(0.5)
         else:
-            return true
+            return True
         if time.time() > timeout:
-            return false
+            return False
         
 
 
