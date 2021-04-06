@@ -77,6 +77,7 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
         await discord_reaction_loading(message, False)
         await discord_reaction_fail(message)
         await channel.send("Terraria server is running and current server is using same filename. Stop server before replacing the file" % filename)
+        return
     
     await message.attachments[0].save(fp=filepath)
 
