@@ -180,6 +180,7 @@ def terraria_start(filename):
 
 def terraria_update():
     import subprocess
+    import code; code.interact(local=dict(globals(), **locals()))
     result = subprocess.check_output(TERRARIA_COMMAND_UPDATE, shell=True)
     return not('Image is up to date' in result.stdout)
 
