@@ -180,9 +180,9 @@ def terraria_start(filename):
 
 def terraria_update():
     import docker
-    import code; code.interact(local=dict(globals(), **locals()))
+    #import code; code.interact(local=dict(globals(), **locals()))
     client = docker.from_env()
-    stdout = client.images.pull(IMAGE_NAME)
+    stdout = client.images.pull('%s:latest' % IMAGE_NAME)
     return not('Image is up to date' in stdout)
 
 def terraria_is_running():
