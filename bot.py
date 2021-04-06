@@ -181,9 +181,10 @@ def terraria_start(filename):
 def terraria_update():
     import docker
     client = docker.from_env()
-    stdout = client.images.pull(IMAGE_NAME, tag='latest')
-    import code; code.interact(local=dict(globals(), **locals()))
-    return not('Image is up to date' in stdout)
+    previous_creation_date = client.images.get('beardedio/terraria').history()[0].get('Created')
+    image = client.images.pull(IMAGE_NAME, tag='latest')
+    current_creation_date = image.history()[0].get('Created')
+    return previous_creation_date != current_creation_date
 
 def terraria_is_running():
     return os.system(TERRARIA_COMMAND_IS_RUNNING) == 0
