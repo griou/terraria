@@ -179,10 +179,11 @@ def terraria_start(filename):
     os.system(TERRARIA_COMMAND_START % (CONTAINER_NAME, TERRARIA_FOLDER, filename, IMAGE_NAME))
 
 def terraria_update():
-    import subprocess
+    import docker
     import code; code.interact(local=dict(globals(), **locals()))
-    result = subprocess.check_output(TERRARIA_COMMAND_UPDATE, shell=True)
-    return not('Image is up to date' in result.stdout)
+    client = docker.from_env()
+    stdout = client.images.pull(IMAGE_NAME)
+    return not('Image is up to date' in stdout)
 
 def terraria_is_running():
     return os.system(TERRARIA_COMMAND_IS_RUNNING) == 0
