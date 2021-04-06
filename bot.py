@@ -70,7 +70,6 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
             await discord_reaction_loading(message, False)
             await discord_reaction_fail(message)
             await channel.send("Terraria server is running and file has same name. Stop server before replacing the file" % filename)
-            return
     
     await message.attachments[0].save(fp=filepath)
 
@@ -126,6 +125,7 @@ async def bot_terraria_stop(ctx, restart=False):
         return False
     
     await terraria_exit()
+    terraria_wait_stopped()
     await discord_reaction_loading(ctx.message, False)
     await discord_reaction_done(ctx.message)
     if restart is False:
@@ -174,6 +174,19 @@ def terraria_is_running():
 
 def terraria_send_message(message):
     os.system(TERRARIA_COMMAND_MESSAGE % (message, CONTAINER_NAME))
+
+def terraria_wait_stopped():
+    timeout = time.time() + 20
+    while True:
+        if terraria_is_running():
+            time.sleep(0.5)
+        else:
+            return true
+        if time.time() > timeout:
+            return false
+        
+
+
 
 async def terraria_send_countdown(seconds=5):
     terraria_send_message('Server will be shutdown in 5 seconds...')
