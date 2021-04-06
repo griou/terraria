@@ -181,7 +181,7 @@ def terraria_start(filename):
 def terraria_update():
     import subprocess
     result = subprocess.check_output(TERRARIA_COMMAND_UPDATE, shell=True)
-    return not('Image is up to date' in result)
+    return not('Image is up to date' in result.stdout)
 
 def terraria_is_running():
     return os.system(TERRARIA_COMMAND_IS_RUNNING) == 0
