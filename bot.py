@@ -160,7 +160,7 @@ async def discord_reaction(message, emoji, add=True):
 
 # Terraria helpers
 async def terraria_exit():
-    await terraria_send_countdown
+    await terraria_send_countdown()
     os.system(TERRARIA_COMMAND_EXIT)
 
 def terraria_start(filename):
