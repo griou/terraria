@@ -45,8 +45,8 @@ async def update_terraria(ctx, filename=WORLD_FILENAME):
         await bot_terraria_start(ctx, filename, restart=True)
 
 @bot.command(name='status', brief="Print the status of the server")
-async def status_terraria(ctx, filename=WORLD_FILENAME):
-    await bot_terraria_status()
+async def status_terraria(ctx):
+    await bot_terraria_status(ctx)
 
 @bot.event
 async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
