@@ -14,7 +14,7 @@ TERRARIA_COMMAND_START = 'docker run --rm -dit -p 7777:7777 --name %s\
                             -v %s:/config \
                             --name=terraria \
                             -e world=%s %s'
-TERRARIA_COMMAND_UPDATE = 'docker pull %s' % IMAGE_NAME
+TERRARIA_COMMAND_UPDATE = ['docker', 'pull', IMAGE_NAME]
 TERRARIA_COMMAND_IS_RUNNING = "docker inspect --format '{{json .State.Running}}' %s" % CONTAINER_NAME
 
 COMMAND_PREFIX = '!'
@@ -181,7 +181,7 @@ def terraria_start(filename):
 def terraria_update():
     import subprocess
     result = subprocess.check_output(TERRARIA_COMMAND_UPDATE, shell=True)
-    return not 'Image is up to date' in result
+    return not('Image is up to date' in result)
 
 def terraria_is_running():
     return os.system(TERRARIA_COMMAND_IS_RUNNING) == 0
@@ -198,9 +198,6 @@ def terraria_wait_stopped():
             return True
         if time.time() > timeout:
             return False
-        
-
-
 
 async def terraria_send_countdown(seconds=5):
     terraria_send_message('Server will be shutdown in 5 seconds...')
@@ -209,8 +206,7 @@ async def terraria_send_countdown(seconds=5):
         seconds -= 1
         time.sleep(1)
 
-
-    
+# DEBUG   
 #import code; code.interact(local=dict(globals(), **locals()))
     
 
