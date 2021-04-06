@@ -64,16 +64,19 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     fileext = filename.rsplit('.', 1)[-1]
     filepath = os.path.join(TERRARIA_FOLDER, filename)
 
+    file_exists = True
     if not fileext in ['bak', 'bak2', 'wld']:
         return
 
     try:
         f = open(filepath)
     except IOError:
-        if terraria_is_running():
-            await discord_reaction_loading(message, False)
-            await discord_reaction_fail(message)
-            await channel.send("Terraria server is running and file has same name. Stop server before replacing the file" % filename)
+        file_exists = False
+
+    if terraria_is_running() and file_exists:
+        await discord_reaction_loading(message, False)
+        await discord_reaction_fail(message)
+        await channel.send("Terraria server is running and current server is using same filename. Stop server before replacing the file" % filename)
     
     await message.attachments[0].save(fp=filepath)
 
