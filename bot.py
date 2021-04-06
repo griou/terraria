@@ -44,6 +44,10 @@ async def update_terraria(ctx, filename=WORLD_FILENAME):
     if await bot_terraria_stop(ctx, restart=True): 
         await bot_terraria_start(ctx, filename, restart=True)
 
+@bot.command(name='status', brief="Print the status of the server")
+async def status_terraria(ctx, filename=WORLD_FILENAME):
+    await bot_terraria_status()
+
 @bot.event
 async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     if str(payload.emoji) != '⬆️':
@@ -78,6 +82,12 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     await channel.send("Terraria map `%s` uploaded to server :white_check_mark:" % filename)
     
 # Bot actions
+async def bot_terraria_status(ctx):
+    await discord_reaction_loading(ctx.message, False)
+    msg = 'Running' if terraria_is_running() else 'Stopped'
+    await discord_reaction_done(ctx.message)
+    await ctx.send(content="Terraria server status is `%s` :eyes:" % msg)
+
 async def bot_terraria_backup(ctx, filename):
     await discord_reaction_loading(ctx.message)
     path = os.path.join(TERRARIA_FOLDER, filename)
