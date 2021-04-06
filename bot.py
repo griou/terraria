@@ -144,10 +144,15 @@ async def bot_terraria_stop(ctx, restart=False):
 
 async def bot_terraria_update(ctx):
     await discord_reaction_loading(ctx.message)
-    terraria_update()
+    
+    updated = terraria_update()
     await discord_reaction_loading(ctx.message, False)
     await discord_reaction_done(ctx.message)
-    await ctx.send(content="Terraria server updated :gear:") 
+
+    if updated:
+        await ctx.send(content="Terraria image server version updated :gear:. Restart server to complete update")
+    else: 
+        await ctx.send(content="Server already up to date :gear:")
 
 # Discord helpers
 async def discord_reaction_loading(message, add=True):
@@ -174,7 +179,9 @@ def terraria_start(filename):
     os.system(TERRARIA_COMMAND_START % (CONTAINER_NAME, TERRARIA_FOLDER, filename, IMAGE_NAME))
 
 def terraria_update():
-    os.system(TERRARIA_COMMAND_UPDATE)
+    import subprocess
+    result = subprocess.check_output(TERRARIA_COMMAND_UPDATE, shell=True)
+    return not 'Image is up to date' in result
 
 def terraria_is_running():
     return os.system(TERRARIA_COMMAND_IS_RUNNING) == 0
