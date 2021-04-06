@@ -36,8 +36,8 @@ async def stop_terraria(ctx):
     await bot_terraria_stop(ctx)
 
 @bot.command(name='update', brief="Update server version if new available")
-async def update_terraria(ctx, filename=WORLD_FILENAME):
-    await bot_terraria_update(ctx, filename)
+async def update_terraria(ctx):
+    await bot_terraria_update(ctx)
 
 @bot.command(name='restart', brief="Stop and start the server")
 async def update_terraria(ctx, filename=WORLD_FILENAME):
@@ -142,12 +142,9 @@ async def bot_terraria_stop(ctx, restart=False):
         await ctx.send(content="Terraria server stopped :red_circle:") 
     return True
 
-async def bot_terraria_update(ctx, filename):
+async def bot_terraria_update(ctx):
     await discord_reaction_loading(ctx.message)
-    if terraria_is_running():
-        await terraria_exit()
-    terraria_update(filename)
-    terraria_start(filename)
+    terraria_update()
     await discord_reaction_loading(ctx.message, False)
     await discord_reaction_done(ctx.message)
     await ctx.send(content="Terraria server updated :gear:") 
