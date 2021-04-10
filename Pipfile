@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+docker = "*"
+"discord.py" = "*"
+redis = "*"
+doit = "*"
+
+[dev-packages]
+black = "*"
+mypy = "*"
+jedi = "*"
+lefthook = "*"
+pytest = "*"
+pytest-spec = "*"
+
+[requires]
+python_version = "3.9"
